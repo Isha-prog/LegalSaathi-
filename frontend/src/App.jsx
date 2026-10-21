@@ -9,6 +9,7 @@ import Step2Category from "./pages/Step2Category";
 import Step3Guidance from "./pages/Step3Guidance";
 import Step4Document from "./pages/Step4Document";
 import Step5Tracker from "./pages/Step5Tracker";
+import Complete from "./pages/Complete";
 
 export default function App() {
   return (
@@ -38,6 +39,7 @@ export default function App() {
               path="step-5"
               element={<StepGuard step={5}><Step5Tracker /></StepGuard>}
             />
+            <Route path="/app/complete" element={<Complete />} />
           </Route>
 
           <Route path="*" element={<Navigate to="/login" replace />} />

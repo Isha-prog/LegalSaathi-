@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { useCase } from "../context/CaseContext";
 import { i18n } from "../i18n";
 
@@ -18,13 +19,18 @@ const STAGE_DESC = {
 };
 
 export default function Step5Tracker() {
-  const { lang, category, caseStatus, setCaseStatus } = useCase();
+    const { lang, category, caseStatus, setCaseStatus } = useCase();
   const t = i18n[lang];
+  const navigate = useNavigate();
 
   const currentIndex = STAGE_KEYS.indexOf(caseStatus);
 
   function handleMarkFiled() {
     setCaseStatus("filed");
+  }
+
+  function handleFinish() {
+    navigate("/app/complete");
   }
 
   return (
@@ -63,11 +69,19 @@ export default function Step5Tracker() {
         })}
       </div>
 
-      {caseStatus === "draft" && (
+            {caseStatus === "draft" && (
         <button className="btn-primary" onClick={handleMarkFiled}>
           <span className="btn-label">{t.markFiled}</span>
         </button>
       )}
+
+      <div className="next-cta" style={{ marginTop: 22 }}>
+        <div className="l">
+          <div className="h">{t.finishBtn}</div>
+          <div className="s">{lang === "hi" ? "अपनी पूरी केस यात्रा का सारांश देखें।" : "See a summary of your full case journey."}</div>
+        </div>
+        <button onClick={handleFinish}>{t.ctaBtn}</button>
+      </div>
     </>
   );
 }

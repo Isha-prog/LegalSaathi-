@@ -2,9 +2,11 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCase } from "../context/CaseContext";
 import { i18n } from "../i18n";
+import PortalShell from "../components/PortalShell";
+import PortalHeroCopy from "../components/PortalHeroCopy";
 
 export default function Signup() {
-  const { lang, setLang, setUser } = useCase();
+  const { lang, setUser } = useCase();
   const t = i18n[lang];
   const navigate = useNavigate();
 
@@ -12,6 +14,7 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({});
 
   function validate() {
@@ -37,70 +40,64 @@ export default function Signup() {
   }
 
   return (
-    <div className="auth-screen">
-      <div className="auth-side">
-        <div className="brand">
-          <div className="brand-mark">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 3V21M7 6H4L2 11C2 12.1 3.3 13 5 13C6.7 13 8 12.1 8 11L6 6H7ZM17 6H20L22 11C22 12.1 20.7 13 19 13C17.3 13 16 12.1 16 11L18 6H17ZM4.5 21H19.5" stroke="#241804" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </div>
-          <div>
-            <div className="brand-name" style={{ color: "#F7F5F0" }}>LegalSaathi</div>
-            <div className="brand-tag">{t.tagline}</div>
+    <PortalShell>
+      <section className="portal-hero" id="home">
+        <div className="portal-hero-inner">
+          <PortalHeroCopy />
+
+          <div className="portal-card">
+            <div className="portal-card-head">
+              <div className="ic">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M19 8v6" /><path d="M22 11h-6" /></svg>
+              </div>
+              <div>
+                <h2>{t.p_signupCardTitle}</h2>
+                <div className="sub">{t.p_signupCardSub}</div>
+              </div>
+            </div>
+
+            <div className="portal-card-body">
+              <form onSubmit={handleSubmit} noValidate>
+                <div className="field">
+                  <label htmlFor="name">{t.nameLabel}</label>
+                  <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Isha Sharma" />
+                  {errors.name && <div className="field-error">{errors.name}</div>}
+                </div>
+
+                <div className="field">
+                  <label htmlFor="email">{t.emailLabel}</label>
+                  <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
+                  {errors.email && <div className="field-error">{errors.email}</div>}
+                </div>
+
+                <div className="field">
+                  <label htmlFor="password">{t.passwordLabel}</label>
+                  <div className="pw-wrap">
+                    <input id="password" type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+                    <button type="button" className="pw-toggle" onClick={() => setShowPassword((s) => !s)}>
+                      {showPassword ? t.p_hide : t.p_show}
+                    </button>
+                  </div>
+                  {errors.password && <div className="field-error">{errors.password}</div>}
+                </div>
+
+                <div className="field">
+                  <label htmlFor="confirmPassword">{t.confirmPasswordLabel}</label>
+                  <input id="confirmPassword" type={showPassword ? "text" : "password"} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" />
+                  {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
+                </div>
+
+                <button type="submit" className="auth-submit">{t.signupBtn}</button>
+              </form>
+
+              <div className="card-register">
+                {t.haveAccount}
+                <Link to="/login">{t.loginLink}</Link>
+              </div>
+            </div>
           </div>
         </div>
-
-        <p className="auth-quote">
-          {t.quote}<span>{t.quoteHighlight}</span>
-        </p>
-
-        <p className="foot-note">{t.footNote}</p>
-      </div>
-
-      <div className="auth-form-wrap">
-        <div className="auth-card">
-          <div className="lang-toggle" style={{ marginBottom: 26, width: "fit-content" }}>
-            <button className={lang === "en" ? "active" : ""} onClick={() => setLang("en")} type="button">English</button>
-            <button className={lang === "hi" ? "active" : ""} onClick={() => setLang("hi")} type="button">हिंदी</button>
-          </div>
-
-          <h1>{t.signupTitle}</h1>
-          <p className="sub">{t.signupSub}</p>
-
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="field">
-              <label htmlFor="name">{t.nameLabel}</label>
-              <input id="name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Isha Sharma" />
-              {errors.name && <div className="field-error">{errors.name}</div>}
-            </div>
-
-            <div className="field">
-              <label htmlFor="email">{t.emailLabel}</label>
-              <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" />
-              {errors.email && <div className="field-error">{errors.email}</div>}
-            </div>
-
-            <div className="field">
-              <label htmlFor="password">{t.passwordLabel}</label>
-              <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
-              {errors.password && <div className="field-error">{errors.password}</div>}
-            </div>
-
-            <div className="field">
-              <label htmlFor="confirmPassword">{t.confirmPasswordLabel}</label>
-              <input id="confirmPassword" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="••••••••" />
-              {errors.confirmPassword && <div className="field-error">{errors.confirmPassword}</div>}
-            </div>
-
-            <button type="submit" className="auth-submit">{t.signupBtn}</button>
-          </form>
-
-          <p className="auth-switch">
-            {t.haveAccount} <Link to="/login">{t.loginLink}</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+      </section>
+    </PortalShell>
   );
 }

@@ -19,15 +19,25 @@ export function CaseProvider({ children }) {
   const [document, setDocument] = useState(null); // { type, body }
   const [caseStatus, setCaseStatus] = useState("draft"); // draft | filed | under_process | resolved
 
-  function unlockUpTo(step) {
+   function unlockUpTo(step) {
     setUnlockedStep((prev) => Math.max(prev, step));
+  }
+
+  function resetCase() {
+    setUnlockedStep(1);
+    setQueryText("");
+    setExtracted(null);
+    setCategory(null);
+    setGuidanceDone([]);
+    setDocument(null);
+    setCaseStatus("draft");
   }
 
   const value = {
     user, setUser,
     caseId,
     lang, setLang,
-    unlockedStep, unlockUpTo,
+       unlockedStep, unlockUpTo, resetCase,
     queryText, setQueryText,
     extracted, setExtracted,
     category, setCategory,
